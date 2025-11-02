@@ -21,11 +21,11 @@ async def lifespan(app: FastAPI):
     
     # Load ML model
     try:
-        ml_detector = MLDetector(model_path='backend/app/models/rf_detector.pkl')
+        ml_detector = MLDetector(model_path='app/models/rf_detector.pkl')
         print("✓ ML model loaded")
     except Exception as e:
         print(f"⚠ Warning: Could not load ML model: {e}")
-        print("  Run 'python backend/train_model.py' to train the model first")
+        print("  Run 'python train_model.py' to train the model first")
     
     print("✓ System ready!")
     print("="*60)

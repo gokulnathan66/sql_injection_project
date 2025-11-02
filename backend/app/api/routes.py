@@ -20,7 +20,7 @@ from ..database.schema import Database
 # Initialize services
 normalizer = QueryNormalizer()
 feature_extractor = FeatureExtractor()
-ml_detector = MLDetector(model_path='backend/app/models/rf_detector.pkl')
+ml_detector = MLDetector(model_path='app/models/rf_detector.pkl')
 database = Database()
 knowledge_base = KnowledgeBase(database)
 
