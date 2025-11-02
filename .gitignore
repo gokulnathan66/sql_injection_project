@@ -24,3 +24,6 @@ backend/app/models/*.pkl
 # OS
 .DS_Store
 
+#Frontend 
+package-lock.json
+node_modules/
