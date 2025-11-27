@@ -1,0 +1,1 @@
+Short answer: Yes — you can place a DB-facing reverse-proxy (or response-filtering layer) that inspects DB responses and blocks or redacts dangerous results (e.g. SELECT *) before they reach the client.
