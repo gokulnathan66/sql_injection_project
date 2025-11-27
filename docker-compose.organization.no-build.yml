@@ -1,0 +1,39 @@
+services:
+  organization:
+    image: sqli-organization:latest
+    container_name: sqli-organization
+    ports:
+      - "8001:8001"
+    volumes:
+      - organization-data:/app/data/local
+      - organization-models:/app/models/local
+    environment:
+      - PYTHONUNBUFFERED=1
+      - APP_MODE=organization
+      - API_PORT=8001
+      - ORG_ID=${ORG_ID:-org-001}
+      - ORG_NAME=${ORG_NAME:-Organization A}
+      - COORDINATOR_URL=${COORDINATOR_URL:-http://coordinator-ec2-ip:8000}
+      - COORDINATOR_API_KEY=${COORDINATOR_API_KEY:-}
+      - DATA_PATH=/app/data/local
+      - MODEL_PATH=/app/models/local
+    networks:
+      - sqli-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  organization-data:
+    driver: local
+  organization-models:
+    driver: local
+
+networks:
+  sqli-network:
+    driver: bridge
+

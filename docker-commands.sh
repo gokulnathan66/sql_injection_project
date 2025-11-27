@@ -71,6 +71,9 @@ cd customer_integration
 docker-compose down
 
 # Start all containers
+docker compose -f docker-compose.coordinator.yml build
+docker compose -f docker-compose.coordinator.yml up -d
+
 echo "Starting all containers..."
 cd /Users/gokulnathanb/Projects/mine/sql-injection-final-year-project
 docker-compose -f docker-compose.coordinator.yml up -d --build
