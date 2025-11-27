@@ -38,29 +38,94 @@ A real-time SQL injection detection system using Machine Learning, built with Fa
 
 ## 🏗️ Architecture
 
+### High-Level System Architecture
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        Browser[Web Browser]
+    end
+
+    subgraph "Frontend - React"
+        App[React Application]
+        Dashboard[Dashboard]
+        QueryTester[Query Tester]
+        Analytics[Analytics]
+        APIClient[API Client]
+        WSClient[WebSocket Client]
+    end
+
+    subgraph "Backend - FastAPI"
+        FastAPI[FastAPI Server]
+        DetectAPI[Detection API]
+        Normalizer[Query Normalizer]
+        FeatureExtractor[Feature Extractor<br/>28 Features]
+        MLDetector[ML Detector<br/>Random Forest]
+        KnowledgeBase[Knowledge Base]
+    end
+
+    subgraph "Data Layer"
+        Database[(SQLite Database)]
+        MLModel[Random Forest Model]
+    end
+
+    Browser --> App
+    App --> Dashboard & QueryTester & Analytics
+    Dashboard & QueryTester & Analytics --> APIClient
+    Dashboard --> WSClient
+    
+    APIClient -->|REST API| FastAPI
+    WSClient -->|WebSocket| FastAPI
+    
+    FastAPI --> DetectAPI
+    DetectAPI --> Normalizer --> FeatureExtractor --> MLDetector --> KnowledgeBase
+    
+    KnowledgeBase --> Database
+    MLDetector --> MLModel
+    
+    DetectAPI -.->|Real-time Alert| WSClient
+
+    style Browser fill:#e1f5ff
+    style App fill:#bbdefb
+    style FastAPI fill:#c8e6c9
+    style MLDetector fill:#fff9c4
+    style Database fill:#ffccbc
+    style MLModel fill:#ffccbc
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    React Frontend                        │
-│  (Dashboard, Query Tester, Analytics, WebSocket)        │
-└────────────────────┬────────────────────────────────────┘
-                     │ HTTP/WebSocket
-┌────────────────────▼────────────────────────────────────┐
-│                  FastAPI Backend                         │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │  Detection Pipeline                              │   │
-│  │  1. Query Normalization                          │   │
-│  │  2. Feature Extraction (28 features)             │   │
-│  │  3. ML Classification (Random Forest)            │   │
-│  │  4. Attack Type Identification                   │   │
-│  │  5. Knowledge Base Storage                       │   │
-│  └──────────────────────────────────────────────────┘   │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│              SQLite Knowledge Base                       │
-│  (Attack History, Statistics, Pattern Analysis)         │
-└─────────────────────────────────────────────────────────┘
+
+### Detection Pipeline Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant FastAPI
+    participant Normalizer
+    participant FeatureExtractor
+    participant MLDetector
+    participant KnowledgeBase
+    participant WebSocket
+
+    User->>Frontend: Enter SQL Query
+    Frontend->>FastAPI: POST /api/detect
+    FastAPI->>Normalizer: Normalize Query
+    Normalizer-->>FastAPI: Cleaned Query
+    FastAPI->>FeatureExtractor: Extract Features
+    FeatureExtractor-->>FastAPI: 28 Features
+    FastAPI->>MLDetector: Classify
+    MLDetector-->>FastAPI: Result + Confidence
+    FastAPI->>KnowledgeBase: Store Detection
+    
+    alt If Malicious
+        FastAPI->>WebSocket: Broadcast Alert
+        WebSocket-->>Frontend: Real-time Notification
+    end
+    
+    FastAPI-->>Frontend: Detection Response
+    Frontend-->>User: Display Results
 ```
+
+> **📐 For detailed architecture diagrams, see [ARCHITECTURE.md](ARCHITECTURE.md)**
 
 ## ✅ System Status
 
@@ -505,6 +570,18 @@ This is an academic project, but suggestions and feedback are welcome!
 ## 📞 Support
 
 For issues or questions, please refer to the project documentation or contact the team members.
+
+## 📄 Project Report
+
+A comprehensive project report is available in `PROJECT_REPORT.md` covering:
+- Executive Summary
+- System Architecture
+- Implementation Details
+- Results and Performance Metrics
+- Testing and Validation
+- Deployment Architecture
+- Future Work
+- Complete Technical Documentation
 
 ---
 
