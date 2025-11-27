@@ -178,3 +178,4 @@ class FederatedDatabase:
                 rows = await cursor.fetchall()
                 return [dict(row) for row in rows]
 
+

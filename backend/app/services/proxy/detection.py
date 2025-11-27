@@ -45,3 +45,4 @@ def is_suspicious(sql_fragment: str) -> bool:
         return False
     return False
 
+

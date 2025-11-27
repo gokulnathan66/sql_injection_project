@@ -136,3 +136,4 @@ class FederatedCoordinator:
             'privacy_status': self.dp_engine.get_privacy_guarantee()
         }
 
+

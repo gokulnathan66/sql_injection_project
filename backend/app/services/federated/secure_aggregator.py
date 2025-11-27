@@ -110,3 +110,4 @@ class SecureAggregator:
         update_list = json.loads(json_str)
         return [np.array(arr) for arr in update_list]
 
+
