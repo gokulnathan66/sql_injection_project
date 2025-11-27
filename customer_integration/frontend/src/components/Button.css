@@ -6,33 +6,13 @@
     font-family: var(--font-family);
     font-weight: var(--font-weight-semibold);
     border: none;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     cursor: pointer;
     transition: all var(--transition-base);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.btn:hover::before {
-    width: 300px;
-    height: 300px;
 }
 
 .btn:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
 }
 
@@ -43,81 +23,63 @@
 }
 
 .btn-md {
-    padding: var(--spacing-3) var(--spacing-6);
+    padding: var(--spacing-3) var(--spacing-5);
     font-size: var(--font-size-base);
 }
 
 .btn-lg {
-    padding: var(--spacing-4) var(--spacing-8);
+    padding: var(--spacing-4) var(--spacing-6);
     font-size: var(--font-size-lg);
 }
 
 /* Variants */
 .btn-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    color: var(--color-white);
-    box-shadow:
-        0 4px 12px rgba(99, 102, 241, 0.4),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    background: var(--color-primary);
+    color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow:
-        0 8px 24px rgba(99, 102, 241, 0.5),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    background: var(--color-primary-dark);
 }
 
 .btn-secondary {
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--color-primary-light);
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
 }
 
 .btn-secondary:hover:not(:disabled) {
-    background: rgba(99, 102, 241, 0.2);
-    border-color: rgba(99, 102, 241, 0.3);
+    background: var(--color-border-light);
+    border-color: var(--color-border-dark);
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: var(--color-white);
-    box-shadow:
-        0 4px 12px rgba(16, 185, 129, 0.4),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    background: var(--color-success);
+    color: white;
 }
 
 .btn-success:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow:
-        0 8px 24px rgba(16, 185, 129, 0.5),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    background: #006644;
 }
 
 .btn-danger {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: var(--color-white);
-    box-shadow:
-        0 4px 12px rgba(239, 68, 68, 0.4),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    background: var(--color-error);
+    color: white;
 }
 
 .btn-danger:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow:
-        0 8px 24px rgba(239, 68, 68, 0.5),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    background: #c42707;
 }
 
 .btn-outline {
     background: transparent;
-    border: 2px solid rgba(99, 102, 241, 0.5);
-    color: var(--color-primary-light);
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
 }
 
 .btn-outline:hover:not(:disabled) {
-    background: rgba(99, 102, 241, 0.1);
-    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: white;
 }
 
 .btn-ghost {
@@ -126,8 +88,7 @@
 }
 
 .btn-ghost:hover:not(:disabled) {
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--color-text-primary);
+    background: var(--color-bg-tertiary);
 }
 
 /* Full width */
@@ -150,20 +111,19 @@
     animation: spin 0.6s linear infinite;
 }
 
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .btn-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    z-index: 1;
 }
 
 .btn-icon svg {
     width: 18px;
     height: 18px;
-}
-
-.btn-text {
-    position: relative;
-    z-index: 1;
 }

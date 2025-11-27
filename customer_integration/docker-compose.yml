@@ -29,8 +29,21 @@ services:
       PORT: 5000
       USE_PROTECTION: "true"
       DETECTION_API: http://host.docker.internal:8000
+      # Federated Learning Configuration
+      ENABLE_FEDERATED: "true"
+      ORG_ID: "customer_demo_001"
+      ORG_NAME: "Customer Demo Organization"
+      COORDINATOR_URL: "http://host.docker.internal:8000"
+      FEDERATED_API_KEY: "${FEDERATED_API_KEY:-default_key}"
+      FEDERATED_TRAINING_INTERVAL: "3600000"
+      DP_EPSILON: "0.5"
+      DP_SENSITIVITY: "1.0"
+      LOCAL_DB_PATH: "/app/data/local_training.db"
+      ORG_ADDRESS: "localhost:5000"
     ports:
       - "5000:5000"
+    volumes:
+      - ./backend/data:/app/data  # Persist local training database
     depends_on:
       database:
         condition: service_healthy
