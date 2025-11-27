@@ -57,18 +57,30 @@ class FederatedCoordinator:
         self.global_model_weights = {}
         print(f"✓ Global model initialized")
     
-    def register_organization(self, org_id: str, org_address: str) -> bool:
+    async def register_organization(self, org_id: str, org_address: str, org_name: str = None) -> bool:
         """Register a new organization"""
         try:
+            # Store in memory (for coordinator operations)
             self.model_distributor.register_client(org_id, org_address)
             self.config['clients'].append({
                 'id': org_id,
                 'address': org_address
             })
-            print(f"✓ Registered organization: {org_id}")
+            
+            # Persist to database
+            if self.db:
+                await self.db.register_organization(
+                    org_id=org_id,
+                    org_name=org_name or org_id,
+                    address=org_address
+                )
+            
+            print(f"✓ Registered organization: {org_id} (persisted to database)")
             return True
         except Exception as e:
             print(f"✗ Failed to register organization: {e}")
+            import traceback
+            traceback.print_exc()
             return False
     
     def run_federated_learning_round(self) -> Dict:

@@ -37,15 +37,17 @@ async def register_organization(registration: OrganizationRegistration):
     if not coordinator:
         raise HTTPException(status_code=503, detail="Federated coordinator not initialized")
     
-    success = coordinator.register_organization(
+    success = await coordinator.register_organization(
         org_id=registration.org_id,
-        org_address=registration.address or f"{registration.org_id}.example.com"
+        org_address=registration.address or f"{registration.org_id}.example.com",
+        org_name=registration.org_name
     )
     
     if success:
         return {
             "status": "registered",
             "org_id": registration.org_id,
+            "org_name": registration.org_name,
             "message": "Organization registered successfully"
         }
     else:
@@ -60,7 +62,22 @@ async def upload_update(update: ModelUpdate, authorization: Optional[str] = Head
     # In production, verify authorization token
     # For now, accept the update
     
-    # Store update (in production, this would be encrypted)
+    # Store update in database
+    if coordinator.db:
+        try:
+            import hashlib
+            # Create hash of update for tracking
+            update_str = str(update.update) + str(update.metrics or {})
+            update_hash = hashlib.sha256(update_str.encode()).hexdigest()[:16]
+            
+            await coordinator.db.log_gradient_update(
+                org_id=update.org_id,
+                round_number=update.round,
+                update_hash=update_hash
+            )
+        except Exception as e:
+            print(f"Error logging gradient update: {e}")
+    
     print(f"Received update from {update.org_id} for round {update.round}")
     
     return {
@@ -89,7 +106,19 @@ async def get_status():
     if not coordinator:
         raise HTTPException(status_code=503, detail="Federated coordinator not initialized")
     
-    return coordinator.get_status()
+    status = coordinator.get_status()
+    
+    # Add database information if available
+    if coordinator.db:
+        try:
+            organizations = await coordinator.db.get_organizations()
+            status['organizations'] = organizations
+            status['total_organizations'] = len(organizations)
+            status['active_organizations'] = len([o for o in organizations if o.get('status') == 'active'])
+        except Exception as e:
+            status['database_error'] = str(e)
+    
+    return status
 
 @router.post("/start-round")
 async def start_round(round_start: RoundStart):
@@ -111,4 +140,36 @@ async def get_history(limit: int = 10):
         "history": summary['round_history'][:limit],
         "total_rounds": summary['total_rounds']
     }
+
+@router.get("/organizations")
+async def get_organizations():
+    """Get all registered organizations"""
+    if not coordinator:
+        raise HTTPException(status_code=503, detail="Federated coordinator not initialized")
+    
+    if coordinator.db:
+        try:
+            organizations = await coordinator.db.get_organizations()
+            return {
+                "organizations": organizations,
+                "total": len(organizations),
+                "active": len([o for o in organizations if o.get('status') == 'active'])
+            }
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    else:
+        # Fallback to in-memory clients
+        return {
+            "organizations": [
+                {
+                    "org_id": c['id'],
+                    "org_name": c.get('id', 'Unknown'),
+                    "address": c.get('address', ''),
+                    "status": "active"
+                }
+                for c in coordinator.model_distributor.clients
+            ],
+            "total": len(coordinator.model_distributor.clients),
+            "active": len(coordinator.model_distributor.clients)
+        }
 

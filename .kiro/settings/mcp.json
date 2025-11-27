@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "tavily": {
+      "url": "",
+      "headers": {},
+      "oauthScopes": [
+        "openid",
+        "email",
+        "profile",
+        "offline_access"
+      ],
+      "command": "/Users/gokulnathanb/.local/bin/tavily-mcp-wrapper.sh",
+      "args": [],
+      "env": {},
+      "timeout": 120000,
+      "disabled": false,
+      "disabledTools": []
+    }
+  }
+}
