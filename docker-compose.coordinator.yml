@@ -3,6 +3,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.coordinator
+    image: sqli-coordinator:latest
     container_name: sqli-coordinator
     ports:
       - "8000:8000"

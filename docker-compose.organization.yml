@@ -3,6 +3,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.organization
+    image: sqli-organization:latest
     container_name: sqli-organization
     ports:
       - "8001:8001"
