@@ -84,5 +84,12 @@ class WebSocketService {
 }
 
 export const wsService = new WebSocketService();
+
+// Helper functions for easier usage
+export const connectWebSocket = () => wsService.connect();
+export const disconnectWebSocket = () => wsService.disconnect();
+export const addWebSocketListener = (callback) => wsService.addListener(callback);
+export const removeWebSocketListener = (callback) => wsService.removeListener(callback);
+
 export default wsService;
 
