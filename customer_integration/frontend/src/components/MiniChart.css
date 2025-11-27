@@ -1,0 +1,8 @@
+.mini-chart {
+    width: 100%;
+    overflow: hidden;
+}
+
+.mini-chart svg {
+    display: block;
+}
