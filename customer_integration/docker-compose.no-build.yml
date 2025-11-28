@@ -1,5 +1,4 @@
 services:
-  # PostgreSQL Database
   database:
     image: postgres:15-alpine
     platform: linux/amd64
@@ -19,7 +18,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # Vulnerable Backend API
   backend:
     image: customer_backend:latest
     platform: linux/amd64
@@ -29,7 +27,6 @@ services:
       PORT: 5000
       USE_PROTECTION: "true"
       DETECTION_API: http://host.docker.internal:8000
-      # Federated Learning Configuration
       ENABLE_FEDERATED: "true"
       ORG_ID: "customer_demo_001"
       ORG_NAME: "Customer Demo Organization"
@@ -43,14 +40,13 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./backend/data:/app/data  # Persist local training database
+      - ./backend/data:/app/data
     depends_on:
       database:
         condition: service_healthy
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  # Vulnerable Frontend
   frontend:
     image: customer_frontend:latest
     platform: linux/amd64
@@ -64,4 +60,3 @@ services:
 
 volumes:
   postgres_data:
-
