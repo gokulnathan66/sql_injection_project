@@ -21,6 +21,7 @@ cd "$SCRIPT_DIR"
 
 # Build frontend image
 echo "Building customer frontend image..."
+echo "Note: Frontend will auto-detect API URL from browser hostname (port 5000)"
 cd frontend
 docker build --platform linux/amd64 -t customer_frontend:latest .
 cd "$SCRIPT_DIR"

@@ -9,4 +9,5 @@ COPY . .
 
 EXPOSE 3001
 
+# Frontend will auto-detect API URL from browser hostname
 CMD ["npm", "run", "dev"]

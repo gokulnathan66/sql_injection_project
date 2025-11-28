@@ -11,7 +11,19 @@ import MiniChart from './components/MiniChart';
 import { formatCurrency, formatAccountNumber } from './utils/formatters';
 import { formatSmartDate } from './utils/dateFormatters';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Use relative URL for same-origin requests, fallback to env var or default
+// Determine API URL: use env var if set, otherwise derive from current hostname with port 5000
+const getApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  if (typeof window !== 'undefined') {
+    // Use same hostname/protocol as frontend, but port 5000
+    return `${window.location.protocol}//${window.location.hostname}:5000`;
+  }
+  return 'http://localhost:5000';
+};
+const API_URL = getApiUrl();
 
 function App() {
   const [activeView, setActiveView] = useState('login');
