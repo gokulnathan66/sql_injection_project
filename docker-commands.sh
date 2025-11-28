@@ -80,7 +80,9 @@ docker-compose -f docker-compose.coordinator.yml up -d --build
 docker-compose -f docker-compose.organization.yml up -d --build
 cd customer_integration
 docker-compose up -d --build
+# docker-compose -f docker-compose.coordinator.yml build
 
+docker compose -f docker-compose.coordinator.yml build
 # View all container status
 echo "All containers status..."
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
