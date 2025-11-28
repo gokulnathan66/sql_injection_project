@@ -62,8 +62,7 @@ services:
     image: customer_frontend:latest
     platform: linux/amd64
     container_name: customer_frontend
-    environment:
-      VITE_API_URL: ${VITE_API_URL:-http://localhost:5000}
+    # VITE_API_URL not set - frontend will auto-detect from browser hostname
     ports:
       - "3001:3001"
     depends_on:
