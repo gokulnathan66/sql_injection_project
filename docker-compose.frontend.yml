@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    image: sqli-frontend:latest
+    platform: linux/amd64
+    container_name: sqli-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    networks:
+      - sqli-network
+    restart: unless-stopped
+
+networks:
+  sqli-network:
+    driver: bridge
