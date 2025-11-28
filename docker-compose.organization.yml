@@ -3,7 +3,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.organization
-      platform: linux/amd64
     image: sqli-organization:latest
     platform: linux/amd64
     container_name: sqli-organization

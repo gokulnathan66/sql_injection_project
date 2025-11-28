@@ -3,7 +3,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.coordinator
-      platform: linux/amd64
     image: sqli-coordinator:latest
     platform: linux/amd64
     container_name: sqli-coordinator
