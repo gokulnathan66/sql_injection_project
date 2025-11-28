@@ -30,9 +30,10 @@ echo "=========================================="
 echo "Starting containers with docker compose..."
 echo "=========================================="
 
-# Use compose files without build sections to avoid the bug
-docker compose -f docker-compose.coordinator.no-build.yml up -d
-docker compose -f docker-compose.organization.no-build.yml up -d
+# Use original compose files with --no-build flag to avoid the build parsing bug
+# Images are already built manually above
+docker compose -f docker-compose.coordinator.yml up -d --no-build
+docker compose -f docker-compose.organization.yml up -d --no-build
 
 echo ""
 echo "=========================================="
@@ -46,6 +47,6 @@ echo ""
 echo "Useful commands:"
 echo "  View logs: docker logs sqli-coordinator -f"
 echo "  View logs: docker logs sqli-organization -f"
-echo "  Stop: docker compose -f docker-compose.coordinator.no-build.yml down"
-echo "  Stop: docker compose -f docker-compose.organization.no-build.yml down"
+echo "  Stop: docker compose -f docker-compose.coordinator.yml down"
+echo "  Stop: docker compose -f docker-compose.organization.yml down"
 
